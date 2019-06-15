@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Tab Two
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item button (click)="goToDevice(item)" *ngFor="let item of items">
+      {{ item.name }}
+    </ion-item>
+  </ion-list>
+</ion-content>
