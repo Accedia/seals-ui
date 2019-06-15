@@ -6,13 +6,17 @@ import { FormsModule } from '@angular/forms';
 import { TabsPageRoutingModule } from './tabs.router.module';
 
 import { TabsPage } from './tabs.page';
-
+import { AgmCoreModule } from '@agm/core';
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule
+    TabsPageRoutingModule,
+    AgmCoreModule.forRoot({
+      
+      libraries: ['places']
+    })
   ],
   declarations: [TabsPage]
 })
