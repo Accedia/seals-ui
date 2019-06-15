@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { BeachDetailsPage } from './beach-details.page';
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +19,7 @@ const routes: Routes = [
     IonicModule,
     CommonModule,
     FormsModule,
+    NgxChartsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [BeachDetailsPage]
