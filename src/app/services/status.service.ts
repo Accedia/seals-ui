@@ -19,7 +19,6 @@ export class StatusService {
   calculateIntHealthIndex(beachMeasurement: BeachMeasurementModel) {
     let esherichiaRatio = beachMeasurement.ecoli / this.escherichiaRefenet
     let enterocociRatio = beachMeasurement.intestinalEnterococci / this.enterocociReferent
-    console.log(esherichiaRatio, enterocociRatio, Math.max(esherichiaRatio, enterocociRatio));
 
     return Math.max(esherichiaRatio, enterocociRatio);
   }

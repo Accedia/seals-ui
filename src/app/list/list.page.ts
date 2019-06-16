@@ -33,8 +33,6 @@ export class ListPage {
     this.beachMeasurementsFiltered = this.beachServiceService.getLatestBeachMeasurements()
 
     this.populateMapWithClassNames()
-    console.log(this.beachMeasurements);
-    console.log(this.classNameMaps);
     this.onChanges();
 
   }
