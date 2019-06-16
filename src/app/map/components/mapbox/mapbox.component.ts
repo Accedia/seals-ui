@@ -53,14 +53,6 @@ export class MapboxComponent implements AfterViewInit {
 
     /// Add map controls
     this.map.addControl(new mapboxgl.NavigationControl());
-    // this.map.addControl(new mapboxgl.FullscreenControl());
-
-    //// Add Marker on Click
-    this.map.on('click', (event) => {
-      const coordinates = [event.lngLat.lng, event.lngLat.lat];
-      const newMarker = new GeoJson(coordinates, { message: this.message });
-      // this.mapService.createMarker(newMarker)
-    });
 
 
     /// Add realtime firebase data on map load
