@@ -1,11 +1,13 @@
 export default class BeachMeasurementModel {
   id: string;
   name: string;
+  shortName: string
   coordX: number;
   coordY: number;
   measurementDate: Date;
   intestinalEnterococci: number;
   ecoli: number;
+  healthIndex: number;
 
   constructor(id: string,
               name: string,
@@ -21,5 +23,10 @@ export default class BeachMeasurementModel {
     this.measurementDate = measurementDate;
     this.intestinalEnterococci = intestinalEnterococci;
     this.ecoli = ecoli;
+
+    let index = this.name.indexOf('-');
+    if(index === -1) index = this.name.length;
+    this.shortName = this.name.substring(0,index).trim();
+    this.healthIndex = 1
   }
 }

@@ -1,1 +1,70 @@
 
+/* FontAwesome for working BootSnippet :> */
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+
+.container{
+    padding-top: 50px;
+}
+.msg-container{
+    padding-top: 18px;
+}
+#messagebox{
+    border: solid 1px #cecece;
+    color: #4B515D;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#messagebox.success{
+    border: solid 1px #00C851;
+    border-left: solid 4px #00C851;
+}
+
+#messagebox.fail{
+    border: solid 1px #ff4444;
+    border-left: solid 4px #ff4444;
+}
+
+#messagebox.warning {
+    border: solid 1px #ffbb33;
+    border-left: solid 4px #ffbb33;
+}
+
+#messagebox-icon{
+    padding: 1em;
+}
+
+#messagebox-detail-link{
+    margin-left: 1em;
+    margin-right: 1em;
+    position: relative;
+    right: 0;
+}
+
+#messagebox-header{
+    max-width: 200px;
+}
+
+#expanded-status{
+    border: solid 1px black;
+}
+
+.row{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.icon{
+    height: 16px;
+    width: 16px;
+}
+
+.label{
+    padding-left: 0.6em;
+}
+
+.wrapper{
+    margin-top: 1em;
+    width: 100%;
+}
