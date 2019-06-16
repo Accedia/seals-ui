@@ -1,3 +1,18 @@
 <ion-content>
+  <div class="autocomplete">
+    <ion-searchbar
+        [(ngModel)]="searchText"
+        (ionFocus)="addFocus()"
+        (ionChange)="search()"
+        (ionBlur)="removeFocus()"
+        debounce=500
+        color="white">
+    </ion-searchbar>
+    <ion-list *ngIf="geoPlaces.length != 0">
+      <ion-item *ngFor="let res of geoPlaces" (click)="goToGeoPlace(res.coordinates)">
+        {{res.label}}
+      </ion-item>
+    </ion-list>
+  </div>
   <app-mapbox></app-mapbox>
 </ion-content>

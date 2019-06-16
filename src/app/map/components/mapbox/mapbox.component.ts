@@ -1,31 +1,52 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { GeoJson, FeatureCollection } from '../../map';
 import { MapService } from '../../../services/map.service';
 import * as mapboxgl from 'mapbox-gl';
 import BeachMeasurementModel from '../../../models/beach-measurement.model';
+import { BeachMeasurementsService } from '../../../services/beach-measurements.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mapbox',
   templateUrl: './mapbox.component.html',
   styleUrls: ['./mapbox.component.scss'],
-  providers: [MapService]
 })
-export class MapboxComponent implements AfterViewInit {
+export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
+  private STATUS_OK = 'OK';
+  private STATUS_MEDIUM = 'MEDIUM';
+  private STATUS_POOR = 'POOR';
+
   map: mapboxgl.Map;
   style = 'mapbox://styles/sterziev/cjwxbq1r10lki1co3wk0fmcff';
-  lat: number;
-  lng: number;
+  lat = 42.590584;
+  lng = 25.324575;
 
-  @Input() beachMeasurements: BeachMeasurementModel[];
+  beachMeasurements: BeachMeasurementModel[];
   // data
   source: any;
   markers: any;
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService, private beachMeasurementsService: BeachMeasurementsService) {
+  }
+
+  private placeObservable: Subscription;
+
+  ngOnInit() {
+    this.placeObservable = this.mapService.placeSubject.subscribe(coodinates => {
+      this.map.flyTo({
+        center: coodinates,
+        zoom: 13
+      });
+    });
   }
 
   ngAfterViewInit() {
     this.initializeMap();
+
+    this.beachMeasurementsService.onBeachMeasurementChange().subscribe(measurements => {
+      this.beachMeasurements = measurements;
+      this.setMapPoints();
+    });
   }
 
   private initializeMap() {
@@ -35,7 +56,8 @@ export class MapboxComponent implements AfterViewInit {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
         this.map.flyTo({
-          center: [this.lng, this.lat]
+          center: [this.lng, this.lat],
+          zoom: 13
         });
       });
     }
@@ -47,7 +69,9 @@ export class MapboxComponent implements AfterViewInit {
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.style,
-      zoom: 13,
+      center: [this.lng, this.lat],
+      zoom: 5,
+      country: 'BG'
     });
 
 
@@ -58,43 +82,25 @@ export class MapboxComponent implements AfterViewInit {
     /// Add realtime firebase data on map load
     this.map.on('load', (event) => {
       this.map.resize();
+    });
 
+  }
+
+  flyTo(data: GeoJson) {
+    this.map.flyTo({
+      center: data.geometry.coordinates
+    });
+  }
+
+  private setMapPoints() {
+    this.map.on('load', (event) => {
+      const features = this.generateFeatures();
 
       this.map.addSource('readBeaches', {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: [{
-            type: 'Feature',
-            properties: {
-              description: '<strong>Make it Mount Pleasant2</strong>',
-              status: 'Medium'
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [27.804599, 42.212821]
-            }
-          }, {
-            type: 'Feature',
-            properties: {
-              description: '<strong>Make it Mount Pleasant1</strong>',
-              status: 'Ok'
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [27.789708, 42.217179]
-            },
-          }, {
-            type: 'Feature',
-            properties: {
-              description: '<strong>Make it Mount Pleasant3</strong>',
-              status: 'Poor'
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [27.819352, 42.200759]
-            },
-          }]
+          features
         }
       });
 
@@ -108,37 +114,66 @@ export class MapboxComponent implements AfterViewInit {
           'circle-color': [
             'match',
             ['get', 'status'],
-            'Poor', '#fbb03b',
-            'Medium', '#223b53',
-            'Ok', '#e55e5e',
+            this.STATUS_POOR, '#fb192b',
+            this.STATUS_MEDIUM, '#FBB03B',
+            this.STATUS_OK, '#58e539',
             /* other */ '#ccc'
           ]
         },
         filter: ['==', '$type', 'Point'],
       });
 
-      // tslint:disable-next-line:no-shadowed-variable
-      this.map.on('click', 'readBeaches', (event: any) => {
-        const features = this.map.queryRenderedFeatures(event.id, { layers: ['readBeaches'] });
-        console.log(features);
-        const description = features[0].properties.description;
-        new mapboxgl.Popup()
-          .setLngLat(event.lngLat)
-          .setHTML(description)
-          .addTo(this.map);
-      });
-
-      this.map.on('load', () => {
-        this.map.resize();
-      });
+      this.setPopovers();
     });
-
   }
 
-  flyTo(data: GeoJson) {
-    this.map.flyTo({
-      center: data.geometry.coordinates
+  private generateFeatures() {
+    return this.beachMeasurements.map(measurement => {
+      const averageMeasurement = (measurement.intestinalEnterococci + measurement.ecoli) / 2;
+      const status = averageMeasurement >= 30 ? this.STATUS_MEDIUM : this.STATUS_OK;
+
+      const featureDescription = `
+      <div>
+        <strong style="display: block">${measurement.name}</strong>
+        <span style="display: block">Ентерококи: ${measurement.intestinalEnterococci}</span>
+        <span style="display: block">Eшерихия коли: ${measurement.ecoli}</span>
+      </div>`;
+
+      return ({
+        type: 'Feature',
+        properties: {
+          description: featureDescription,
+          status
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [measurement.coordY, measurement.coordX]
+        }
+      });
     });
+  }
+
+  private setPopovers() {
+    this.map.on('click', 'readBeaches', (e: any) => {
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const description = e.features[0].properties.description;
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(this.map);
+    });
+  }
+
+  ngOnDestroy() {
+    this.placeObservable.unsubscribe();
   }
 }
 

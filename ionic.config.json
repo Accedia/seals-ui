@@ -1,5 +1,7 @@
 {
   "name": "seals-ui",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -1,7 +1,7 @@
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapPage } from './map.page';
 import { MapboxComponent } from './components/mapbox/mapbox.component';
@@ -13,6 +13,7 @@ import { MapboxComponent } from './components/mapbox/mapbox.component';
     FormsModule,
     RouterModule.forChild([{ path: '', component: MapPage }])
   ],
-  declarations: [MapPage, MapboxComponent]
+  declarations: [MapPage, MapboxComponent],
+  providers: [TitleCasePipe]
 })
 export class MapPageModule {}

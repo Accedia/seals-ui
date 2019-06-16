@@ -1,0 +1,34 @@
+.autocomplete {
+  width: 100%;
+  height: 42px;
+  z-index: 1;
+
+  ion-searchbar {
+    padding: 1px !important;
+    --backgroud: white;
+    height: 42px;
+  }
+
+  ion-list {
+    position: absolute;
+    width: inherit;
+    overflow-y: scroll;
+    max-height: 150%;
+    z-index: 999;
+
+    ion-item {
+
+      img {
+        max-height: 2.5rem;
+        width: auto;
+        margin: auto;
+        display: block;
+      }
+    }
+
+    ion-item:hover {
+      cursor: pointer;
+      background: #f1f1f1
+    }
+  }
+}
