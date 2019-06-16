@@ -3,16 +3,11 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>beach-details</ion-title>
+    <ion-title>{{beachShortName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card class="chart-wrapper" #wrapper>
-    <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [results]="multi" [gradient]="gradient"
-      [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [autoScale]="autoScale"
-      [legendPosition]="below" [timeline]="timeline" (select)="onSelect($event)">
-    </ngx-charts-line-chart>
-  </ion-card>
+  <chart-component [dataArray]="dataArray"></chart-component>
+  <ion-item>{{beachName}}</ion-item>
 </ion-content>

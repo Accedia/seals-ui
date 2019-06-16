@@ -50,4 +50,21 @@ export class BeachMeasurementsService {
   onBeachMeasurementChange() {
     return this.beachMeasurementsSubject.asObservable();
   }
+
+  fetchMeasurementsById(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/beaches/${id}`).pipe(
+      map((x: any) =>
+        x.map(obj =>
+          new BeachMeasurementModel(
+            obj._id,
+            obj.name,
+            obj.coord_x,
+            obj.coord_y,
+            obj.measurement_date,
+            obj.intestinal_enterococci,
+            obj.ecoli)
+        )
+      )
+    );
+  }
 }

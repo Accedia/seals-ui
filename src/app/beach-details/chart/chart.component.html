@@ -1,0 +1,7 @@
+<ion-card class="chart-wrapper" #wrapper>
+  <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [results]="dataArray" [gradient]="gradient"
+    [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [autoScale]="autoScale"
+    [legendPosition]="below" [timeline]="timeline" (select)="onSelect($event)">
+  </ngx-charts-line-chart>
+</ion-card>

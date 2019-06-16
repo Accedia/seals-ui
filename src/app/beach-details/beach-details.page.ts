@@ -1,69 +1,72 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BeachMeasurementsService } from '../services/beach-measurements.service';
+import BeachMeasurementModel from '../models/beach-measurement.model';
+import { DatePipe } from '@angular/common'
 @Component({
   selector: 'app-beach-details',
   templateUrl: './beach-details.page.html',
   styleUrls: ['./beach-details.page.scss']
 })
 export class BeachDetailsPage implements OnInit {
-  @ViewChild('wrapper') myDiv: ElementRef;
-  view: any[] = [342, 300];
+  dataArray: any[];
+  beachMeasurements: BeachMeasurementModel[];
+  beachName: string;
+  beachShortName: string
 
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = false;
-  xAxisLabel = 'Number';
-  showYAxisLabel = false;
-  yAxisLabel = 'Color Value';
-  timeline = false;
-  legendPosition = "bellow"
-
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
-
-  multi: any[] = [
-    {
-      name: 'Cyan',
-      series: [
-        {
-          name: 5,
-          value: 2650
-        },
-        {
-          name: 10,
-          value: 2800
-        },
-        {
-          name: 15,
-          value: 2000
-        }
-      ]
-    },
-    {
-      name: 'Yellow',
-      series: [
-        {
-          name: 5,
-          value: 2500
-        },
-        {
-          name: 10,
-          value: 3100
-        },
-        {
-          name: 15,
-          value: 2350
-        }
-      ]
-    }
-  ];
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private beachService: BeachMeasurementsService,
+    public datepipe: DatePipe) { }
 
   ngOnInit() {
-    console.log(this.route.snapshot.paramMap.get('id'));
+    this.beachService.fetchMeasurementsById(this.route.snapshot.paramMap.get('id')).subscribe(
+      data => {
+        this.beachMeasurements = data;
+        this.beachName = data[0].name;
+        this.beachShortName = data[0].shortName;
+
+        var multi: any[] = [
+          this.seedColi(),
+          this.seedEntero()
+        ]
+        this.dataArray = multi;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  seedColi() {
+    var s = [];
+    for (var beach of this.beachMeasurements) {
+      s.push(
+        {
+          name: this.datepipe.transform(beach.measurementDate, 'yyyy-MM-dd'),
+          value: beach.ecoli
+        })
+    }
+
+    return {
+      name: 'Eшерихия коли',
+      series: s
+    }
+  }
+
+  seedEntero() {
+    var s = [];
+    for (var beach of this.beachMeasurements) {
+      s.push(
+        {
+          name: this.datepipe.transform(beach.measurementDate, 'yyyy-MM-dd'),
+          value: beach.intestinalEnterococci
+        })
+    }
+
+    return {
+      name: 'Ентерококи',
+      series: s
+    }
   }
 }

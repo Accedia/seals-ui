@@ -4,8 +4,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BeachDetailsPage } from './beach-details.page';
 
 describe('BeachDetailsPage', () => {
-  let component: BeachDetailsPage;
-  let fixture: ComponentFixture<BeachDetailsPage>;
+  var component: BeachDetailsPage;
+  var fixture: ComponentFixture<BeachDetailsPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
