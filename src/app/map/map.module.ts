@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapPage } from './map.page';
+import { MapboxComponent } from './components/mapbox/mapbox.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { MapPage } from './map.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: MapPage }])
   ],
-  declarations: [MapPage]
+  declarations: [MapPage, MapboxComponent]
 })
 export class MapPageModule {}

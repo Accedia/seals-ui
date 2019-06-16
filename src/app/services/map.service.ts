@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { GeoJson } from './map';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 
@@ -8,7 +7,6 @@ import { environment } from 'src/environments/environment';
 export class MapService {
 
   constructor() {
-    mapboxgl.accessToken = environment.mapbox.accessToken
+    mapboxgl.accessToken = environment.mapbox.accessToken;
   }
-
-} 
+}
