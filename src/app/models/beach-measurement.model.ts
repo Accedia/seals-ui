@@ -7,7 +7,6 @@ export default class BeachMeasurementModel {
   measurementDate: Date;
   intestinalEnterococci: number;
   ecoli: number;
-  healthIndex: number;
 
   constructor(id: string,
               name: string,
@@ -25,8 +24,10 @@ export default class BeachMeasurementModel {
     this.ecoli = ecoli;
 
     let index = this.name.indexOf('-');
+    if(name.charAt(index+1)!==' '){
+      index = this.name.indexOf('-',index+1);
+    }
     if(index === -1) index = this.name.length;
     this.shortName = this.name.substring(0,index).trim();
-    this.healthIndex = 1
   }
 }

@@ -1,43 +1,42 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Всички плажове
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-list >
-    <ion-item button (click)="goToBeach(beach)" *ngFor="let beach of beachMeasurements">
+  <ion-list>
+    <form [formGroup]="filterForm">
+      <div class="form-group padding">
+        <label for="input">Търсене на плаж</label>
+        <input type="text" class="form-control" id="input"
+          placeholder="Въведи име на град или плаж" formControlName="input">
+      </div>
+    </form>
+    <ion-item button (click)="goToBeach(beach)" *ngFor="let beach of beachMeasurementsFiltered">
 
-      	<div class="row wrapper">
-            <div [className]="classNameMaps.get(beach.id)[0]" id="messagebox" >
-                <div class="row">
-                    <div class="" id="messagebox-icon">
-                        <span [className]="classNameMaps.get(beach.id)[1]"></span>
-                    </div>
-                    <div class="">
-                        <div class="row h5" id="messagebox-header">{{beach.shortName}}</div>
-                        <div class="row">
-                            <div class="icon">
-                                <img class="img-responsive" src="assets/coli.png">
-                            </div>
-                            <div class="label">
-                                Eшерихия коли: {{beach.ecoli}} <span style="font-size: 10px;">MPN/100 cm3</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="icon">
-                                <img class="img-responsive" src="assets/enterococi2.png">
-                            </div>
-                            <div class="label">
-                                Ентерококи: {{beach.intestinalEnterococci}} <span style="font-size: 10px;">MPN/100 cm3</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="row wrapper">
+        <div [className]="classNameMaps.get(beach.id)[0]" id="messagebox">
+          <div class="row">
+            <div class="" id="messagebox-icon">
+              <span [className]="classNameMaps.get(beach.id)[1]"></span>
             </div>
+            <div class="">
+              <div class="row h5" id="messagebox-header">{{beach.shortName}}</div>
+              <div class="row">
+                <div class="icon">
+                  <img class="img-responsive" src="assets/coli.png">
+                </div>
+                <div class="label">
+                  Eшерихия коли: {{beach.ecoli}} <span style="font-size: 10px;">MPN/100 cm3</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="icon">
+                  <img class="img-responsive" src="assets/enterococi2.png">
+                </div>
+                <div class="label">
+                  Ентерококи: {{beach.intestinalEnterococci}} <span style="font-size: 10px;">MPN/100 cm3</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
     </ion-item>
   </ion-list>

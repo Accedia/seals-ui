@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { BeachMeasurementsService } from '../services/beach-measurements.service';
 import BeachMeasurementModel from '../models/beach-measurement.model';
 import { StatusService } from '../services/status.service';
+import { FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-list',
@@ -12,19 +13,38 @@ import { StatusService } from '../services/status.service';
 })
 export class ListPage {
   beachMeasurements: BeachMeasurementModel[];
-  classNameMaps = new Map();
+  beachMeasurementsFiltered: BeachMeasurementModel[];
 
+  classNameMaps = new Map();
+  filterForm: FormGroup;
   constructor(
     private navCtrl: NavController,
     private beachServiceService: BeachMeasurementsService,
-    private statusService: StatusService) { }
+    private statusService: StatusService,
+    private formBuilder: FormBuilder) {
+
+    this.filterForm = this.formBuilder.group({
+      input: ''
+    });
+  }
 
   ngOnInit() {
     this.beachMeasurements = this.beachServiceService.getLatestBeachMeasurements()
+    this.beachMeasurementsFiltered = this.beachServiceService.getLatestBeachMeasurements()
+
     this.populateMapWithClassNames()
     console.log(this.beachMeasurements);
     console.log(this.classNameMaps);
-    
+    this.onChanges();
+
+  }
+
+  onChanges(): void {
+    this.filterForm.get('input').valueChanges.subscribe(filter => {
+      this.beachMeasurementsFiltered = this.beachMeasurements.filter(
+        b => new String(b.name.toLocaleLowerCase()).includes(filter.toLocaleLowerCase())
+      )
+    });
   }
 
   goToBeach(beach: BeachModel) {
