@@ -14,7 +14,7 @@ export class MapPage implements OnInit {
     private beachServiceService: BeachMeasurementsService) {}
 
   ngOnInit() {
-    this.beachServiceService.getLatestMeasurements().subscribe(measurements => {
+    this.beachServiceService.onBeachMeasurementChange().subscribe(measurements => {
       console.log(measurements);
     }, (error) => {
       console.log(error);

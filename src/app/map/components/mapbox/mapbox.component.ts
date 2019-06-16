@@ -64,9 +64,37 @@ export class MapboxComponent implements AfterViewInit {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: [
-
-          ]
+          features: [{
+            type: 'Feature',
+            properties: {
+              description: '<strong>Make it Mount Pleasant2</strong>',
+              status: 'Medium'
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [27.804599, 42.212821]
+            }
+          }, {
+            type: 'Feature',
+            properties: {
+              description: '<strong>Make it Mount Pleasant1</strong>',
+              status: 'Ok'
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [27.789708, 42.217179]
+            },
+          }, {
+            type: 'Feature',
+            properties: {
+              description: '<strong>Make it Mount Pleasant3</strong>',
+              status: 'Poor'
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [27.819352, 42.200759]
+            },
+          }]
         }
       });
 

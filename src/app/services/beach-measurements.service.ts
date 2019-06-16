@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import BeachMeasurementModel from '../models/beach-measurement.model';
 import { map } from 'rxjs/operators';
 
@@ -12,12 +12,21 @@ export class BeachMeasurementsService {
   private headers: HttpHeaders;
   private baseUrl: string;
 
+  beachMeasurements: BeachMeasurementModel[];
+
+  beachMeasurementsSubject: Subject<BeachMeasurementModel[]> = new Subject();
+
   constructor(private http: HttpClient) {
     this.headers = new HttpHeaders().set('Content-Type', 'application/json');
     this.baseUrl = environment.serverUrl;
+
+    this.fetchLatestMeasurements().subscribe(measurements => {
+      this.beachMeasurementsSubject.next(measurements);
+      this.beachMeasurements = measurements;
+    });
   }
 
-  getLatestMeasurements(): Observable<any> {
+  private fetchLatestMeasurements(): Observable<any> {
     return this.http.get(`${this.baseUrl}/beaches`).pipe(
       map((x: any) =>
         x.map(obj =>
@@ -32,5 +41,13 @@ export class BeachMeasurementsService {
         )
       )
     );
+  }
+
+  getLatestBeachMeasurements() {
+    return [...this.beachMeasurements];
+  }
+
+  onBeachMeasurementChange() {
+    return this.beachMeasurementsSubject.asObservable();
   }
 }
