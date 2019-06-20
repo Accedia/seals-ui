@@ -5,6 +5,8 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapPage } from './map.page';
 import { MapboxComponent } from './components/mapbox/mapbox.component';
+import { SearchboxPage } from './components/searchbox/searchbox.page';
+import { MapService } from '../services/map.service';
 
 @NgModule({
   imports: [
@@ -13,7 +15,7 @@ import { MapboxComponent } from './components/mapbox/mapbox.component';
     FormsModule,
     RouterModule.forChild([{ path: '', component: MapPage }])
   ],
-  declarations: [MapPage, MapboxComponent],
-  providers: [TitleCasePipe]
+  declarations: [MapPage, MapboxComponent, SearchboxPage],
+  providers: [TitleCasePipe,MapService]
 })
 export class MapPageModule {}

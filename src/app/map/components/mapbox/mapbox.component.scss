@@ -1,7 +1,7 @@
 .map-wrapper {
   position: relative;
   width: 100%;
-  height: calc(100% - 42px);
+  height: 100%;
 }
 
 #map {
@@ -10,4 +10,14 @@
   bottom: 0;
   width: 100%;
   height: 100%;
+}
+
+.search-box {
+  padding: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.search-box {
+  z-index: 10;
 }

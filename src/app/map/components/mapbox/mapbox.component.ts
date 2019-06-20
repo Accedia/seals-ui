@@ -32,7 +32,7 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   private placeObservable: Subscription;
 
   ngOnInit() {
-    this.placeObservable = this.mapService.placeSubject.subscribe(coodinates => {
+    this.placeObservable = this.mapService.onPlaceChange().subscribe(coodinates => {
       this.map.flyTo({
         center: coodinates,
         zoom: 13

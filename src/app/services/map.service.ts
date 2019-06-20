@@ -27,4 +27,8 @@ export class MapService {
       }
     });
   }
+
+  onPlaceChange(){
+    return this.placeSubject.asObservable();
+  }
 }
