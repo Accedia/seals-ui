@@ -12,7 +12,7 @@ export class BeachMeasurementsService {
   private headers: HttpHeaders;
   private baseUrl: string;
 
-  beachMeasurements: BeachMeasurementModel[];
+  beachMeasurements: BeachMeasurementModel[] = [];
 
   beachMeasurementsSubject: Subject<BeachMeasurementModel[]> = new Subject();
 

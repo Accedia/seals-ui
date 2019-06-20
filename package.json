@@ -1,8 +1,7 @@
 {
   "name": "seals-ui",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Seals Accedia",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -28,6 +27,7 @@
     "@ionic/angular": "^4.1.0",
     "@swimlane/ngx-charts": "^12.0.1",
     "cordova-android": "8.0.0",
+    "cordova-ios": "5.0.1",
     "core-js": "^2.5.4",
     "mapbox-gl": "^1.0.0",
     "rxjs": "~6.5.1",
@@ -80,7 +80,8 @@
       "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

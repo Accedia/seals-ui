@@ -5,6 +5,8 @@ import * as mapboxgl from 'mapbox-gl';
 import BeachMeasurementModel from '../../../models/beach-measurement.model';
 import { BeachMeasurementsService } from '../../../services/beach-measurements.service';
 import { Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-mapbox',
@@ -26,7 +28,10 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   source: any;
   markers: any;
 
-  constructor(private mapService: MapService, private beachMeasurementsService: BeachMeasurementsService) {
+  constructor(private mapService: MapService,
+              private beachMeasurementsService: BeachMeasurementsService,
+              private datePipe: DatePipe,
+              private activeRoute: ActivatedRoute) {
   }
 
   private placeObservable: Subscription;
@@ -42,14 +47,11 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.initializeMap();
-
-    this.beachMeasurementsService.onBeachMeasurementChange().subscribe(measurements => {
-      this.beachMeasurements = measurements;
-      this.setMapPoints();
-    });
   }
 
   private initializeMap() {
+    this.buildMap();
+
     /// locate the user
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -62,7 +64,16 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       });
     }
 
-    this.buildMap();
+    // TODO: Bug fix beggining of map loading
+    this.beachMeasurements = this.beachMeasurementsService.getLatestBeachMeasurements();
+    if (this.beachMeasurements.length !== 0) {
+      this.setMapPoints();
+    } else {
+      this.beachMeasurementsService.onBeachMeasurementChange().subscribe(measurements => {
+        this.beachMeasurements = measurements;
+        this.setMapPoints();
+      });
+    }
   }
 
   buildMap() {
@@ -80,7 +91,7 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
 
 
     /// Add realtime firebase data on map load
-    this.map.on('load', (event) => {
+    this.map.on('load', () => {
       this.map.resize();
     });
 
@@ -93,7 +104,7 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private setMapPoints() {
-    this.map.on('load', (event) => {
+    this.map.on('load', () => {
       const features = this.generateFeatures();
 
       this.map.addSource('readBeaches', {
@@ -135,8 +146,11 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       const featureDescription = `
       <div>
         <strong style="display: block">${measurement.name}</strong>
-        <span style="display: block">Ентерококи: ${measurement.intestinalEnterococci}</span>
-        <span style="display: block">Eшерихия коли: ${measurement.ecoli}</span>
+        <span style="display: block">Ентерококи: ${measurement.intestinalEnterococci}
+          <span style="font-size: 10px"> MPN/100 cm3</span>
+        </span>
+        <span style="display: block">Eшерихия коли: ${measurement.ecoli} <span style="font-size: 10px">MPN/100 cm3</span></span>
+        <span style="display: block">${this.datePipe.transform(measurement.measurementDate, 'yyyy-MM-dd')}</span>
       </div>`;
 
       return ({
