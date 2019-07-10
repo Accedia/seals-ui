@@ -7,6 +7,7 @@ import { MapPage } from './map.page';
 import { MapboxComponent } from './components/mapbox/mapbox.component';
 import { SearchboxPage } from './components/searchbox/searchbox.page';
 import { MapService } from '../services/map.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { MapService } from '../services/map.service';
     RouterModule.forChild([{ path: '', component: MapPage }])
   ],
   declarations: [MapPage, MapboxComponent, SearchboxPage],
-  providers: [TitleCasePipe, DatePipe, MapService]
+  providers: [TitleCasePipe, DatePipe, MapService, Geolocation]
 })
 export class MapPageModule {}

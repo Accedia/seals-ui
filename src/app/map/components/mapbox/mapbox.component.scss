@@ -1,7 +1,7 @@
 .map-wrapper {
   position: relative;
   width: 100%;
-  height: calc(100vh - 42px);
+  height: calc(100vh - 57px);
 }
 
 #map {
@@ -13,7 +13,7 @@
 }
 
 .search-box {
-  width: 80%;
+  width: 100%;
   padding: 8px;
   position: absolute;
   top: 0;
@@ -22,3 +22,26 @@
 .search-box {
   z-index: 10;
 }
+
+.localize{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  background-color: transparent;
+  padding-right: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 40px;
+  background-repeat: no-repeat;
+  background-image: url(../../../../assets/location.svg);
+}
+
+.marker {
+  // background-image: url('https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg');
+  background-image: url(../../../../assets/location.svg);
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  }

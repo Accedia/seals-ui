@@ -4,6 +4,8 @@ import { environment } from '../../environments/environment';
 import { Observable, Subject } from 'rxjs';
 import BeachMeasurementModel from '../models/beach-measurement.model';
 import { map } from 'rxjs/operators';
+import GeoCodingPlace from '../models/geocoding-place';
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class BeachMeasurementsService {
 
   beachMeasurementsSubject: Subject<BeachMeasurementModel[]> = new Subject();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private mapService: MapService) {
     this.headers = new HttpHeaders().set('Content-Type', 'application/json');
     this.baseUrl = environment.serverUrl;
 
@@ -66,5 +68,13 @@ export class BeachMeasurementsService {
         )
       )
     );
+  }
+
+  getAllbeachesAsGeoCodingPlaces(){
+    return this.beachMeasurements.map(b=> new GeoCodingPlace(
+                                          b.coordX,
+                                          b.coordY,
+                                          b.shortName,
+                                          b.name + ' ' + this.mapService.cyrlat(b.name)))
   }
 }

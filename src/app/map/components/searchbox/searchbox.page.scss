@@ -3,6 +3,8 @@
   height: 42px;
   z-index: 1;
   background-color: white;
+  border-radius: 50px;
+  overflow: hidden;
 
   ion-searchbar {
     padding: 1px !important;
@@ -14,7 +16,7 @@
     position: absolute;
     width: inherit;
     overflow-y: scroll;
-    max-height: 150%;
+    max-height: 384%;
     z-index: 999;
 
     ion-item {
@@ -31,5 +33,10 @@
       cursor: pointer;
       background: #f1f1f1
     }
+  }
+
+  .list{
+    width: 95%;
+    border-radius: 20px;
   }
 }

@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { GeoJson, FeatureCollection } from '../../map';
+import { GeoJson } from '../../map';
 import { MapService } from '../../../services/map.service';
 import * as mapboxgl from 'mapbox-gl';
 import BeachMeasurementModel from '../../../models/beach-measurement.model';
 import { BeachMeasurementsService } from '../../../services/beach-measurements.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mapbox',
@@ -29,12 +30,13 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   markers: any;
 
   constructor(private mapService: MapService,
-              private beachMeasurementsService: BeachMeasurementsService,
-              private datePipe: DatePipe,
-              private activeRoute: ActivatedRoute) {
+    private beachMeasurementsService: BeachMeasurementsService,
+    private datePipe: DatePipe,
+    private geolocation: Geolocation) {
   }
 
   private placeObservable: Subscription;
+  private coordinatesSubs: Subscription;
 
   ngOnInit() {
     this.placeObservable = this.mapService.onPlaceChange().subscribe(coodinates => {
@@ -53,16 +55,24 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     this.buildMap();
 
     /// locate the user
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-        this.map.flyTo({
-          center: [this.lng, this.lat],
-          zoom: 13
-        });
+    var el = document.createElement('div');
+    el.className = 'marker';
+    var marker = new mapboxgl.Marker(el);
+
+    this.coordinatesSubs = this.geolocation.watchPosition()
+      // .filter((p) => p.coords !== undefined) //Filter Out Errors
+      .subscribe(resp => {
+        if (resp) {
+          this.lat = resp.coords.latitude;
+          this.lng = resp.coords.longitude;
+          console.log(this.lng + ' ' + this.lat);
+
+          marker.setLngLat([this.lng, this.lat])
+            .addTo(this.map);
+
+          this.flyToMe();
+        }
       });
-    }
 
     // TODO: Bug fix beggining of map loading
     this.beachMeasurements = this.beachMeasurementsService.getLatestBeachMeasurements();
@@ -85,23 +95,25 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       country: 'BG'
     });
 
+    // disable map rotation using right click + drag
+    this.map.dragRotate.disable();
 
     /// Add map controls
-    this.map.addControl(new mapboxgl.NavigationControl());
+    // this.map.addControl(new mapboxgl.NavigationControl());
 
-
-    /// Add realtime firebase data on map load
     this.map.on('load', () => {
       this.map.resize();
     });
 
   }
 
-  flyTo(data: GeoJson) {
+  flyToMe() {
     this.map.flyTo({
-      center: data.geometry.coordinates
+      center: [this.lng, this.lat],
+      zoom: 13
     });
   }
+
 
   private setMapPoints() {
     this.map.on('load', () => {
@@ -188,6 +200,7 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.placeObservable.unsubscribe();
+    this.coordinatesSubs.unsubscribe();
   }
 }
 
