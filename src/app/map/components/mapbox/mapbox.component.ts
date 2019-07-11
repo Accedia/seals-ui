@@ -53,37 +53,8 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private initializeMap() {
     this.buildMap();
-
-    /// locate the user
-    var el = document.createElement('div');
-    el.className = 'marker';
-    var marker = new mapboxgl.Marker(el);
-
-    this.coordinatesSubs = this.geolocation.watchPosition()
-      // .filter((p) => p.coords !== undefined) //Filter Out Errors
-      .subscribe(resp => {
-        if (resp) {
-          this.lat = resp.coords.latitude;
-          this.lng = resp.coords.longitude;
-          console.log(this.lng + ' ' + this.lat);
-
-          marker.setLngLat([this.lng, this.lat])
-            .addTo(this.map);
-
-          this.flyToMe();
-        }
-      });
-
-    // TODO: Bug fix beggining of map loading
-    this.beachMeasurements = this.beachMeasurementsService.getLatestBeachMeasurements();
-    if (this.beachMeasurements.length !== 0) {
-      this.setMapPoints();
-    } else {
-      this.beachMeasurementsService.onBeachMeasurementChange().subscribe(measurements => {
-        this.beachMeasurements = measurements;
-        this.setMapPoints();
-      });
-    }
+    this.locateUser();
+    this.seedMap();
   }
 
   buildMap() {
@@ -107,9 +78,42 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
 
   }
 
-  flyToMe() {
+  locateUser() {
+    var el = document.createElement('div');
+    el.className = 'marker';
+    var marker = new mapboxgl.Marker(el);
+
+    this.coordinatesSubs = this.geolocation.watchPosition()
+      // .filter((p) => p.coords !== undefined) //Filter Out Errors
+      .subscribe(resp => {
+        if (resp) {
+          this.lat = resp.coords.latitude;
+          this.lng = resp.coords.longitude;
+          console.log(this.lng + ' ' + this.lat);
+
+          marker.setLngLat([this.lng, this.lat])
+            .addTo(this.map);
+        }
+      });
+  }
+
+  seedMap() {
+    // TODO: Bug fix beggining of map loading
+    this.beachMeasurements = this.beachMeasurementsService.getLatestBeachMeasurements();
+    if (this.beachMeasurements.length !== 0) {
+      this.setMapPoints();
+    } else {
+      this.beachMeasurementsService.onBeachMeasurementChange().subscribe(measurements => {
+        this.beachMeasurements = measurements;
+        this.setMapPoints();
+      });
+    }
+  }
+
+  flyToMe(offsetLat: number) {
     this.map.flyTo({
       center: [this.lng, this.lat],
+      offset: [0, offsetLat],
       zoom: 13
     });
   }

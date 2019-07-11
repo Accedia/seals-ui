@@ -1,23 +1,23 @@
-import { IonicModule } from '@ionic/angular';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+// import { IonicModule } from '@ionic/angular';
+// import { NgModule } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
 
-import { TabsPageRoutingModule } from './tabs.router.module';
+// import { TabsPageRoutingModule } from './tabs.router.module';
 
-import { TabsPage } from './tabs.page';
-import { AgmCoreModule } from '@agm/core';
-@NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    TabsPageRoutingModule,
-    AgmCoreModule.forRoot({
+// import { TabsPage } from './tabs.page';
+// import { AgmCoreModule } from '@agm/core';
+// @NgModule({
+//   imports: [
+//     IonicModule,
+//     CommonModule,
+//     FormsModule,
+//     TabsPageRoutingModule,
+//     AgmCoreModule.forRoot({
       
-      libraries: ['places']
-    })
-  ],
-  declarations: [TabsPage]
-})
-export class TabsPageModule {}
+//       libraries: ['places']
+//     })
+//   ],
+//   declarations: [TabsPage]
+// })
+// export class TabsPageModule {}
