@@ -8,13 +8,15 @@ import { MapboxComponent } from './components/mapbox/mapbox.component';
 import { SearchboxPage } from './components/searchbox/searchbox.page';
 import { MapService } from '../services/map.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { BeachDetailsPageModule } from '../beach-details/beach-details.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: MapPage }])
+    RouterModule.forChild([{ path: '', component: MapPage }]),
+    BeachDetailsPageModule,
   ],
   declarations: [MapPage, MapboxComponent, SearchboxPage],
   providers: [TitleCasePipe, DatePipe, MapService, Geolocation]

@@ -11,7 +11,7 @@ import { ChartComponent } from './chart/chart.component';
 import { DatePipe } from '@angular/common'
 const routes: Routes = [
   {
-    path: '',
+    path: '/details',
     component: BeachDetailsPage
   }
 ];

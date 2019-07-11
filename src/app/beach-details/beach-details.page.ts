@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BeachMeasurementsService } from '../services/beach-measurements.service';
 import BeachMeasurementModel from '../models/beach-measurement.model';
 import { DatePipe } from '@angular/common';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-beach-details',
@@ -10,18 +11,20 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./beach-details.page.scss']
 })
 export class BeachDetailsPage implements OnInit {
+  @Input() id: string;
   dataArray: any[];
   beachMeasurements: BeachMeasurementModel[];
   beachName: string;
   beachShortName: string;
 
   constructor(
-    private route: ActivatedRoute,
     private beachService: BeachMeasurementsService,
-    public datepipe: DatePipe) { }
+    public datepipe: DatePipe,
+    public modalController: ModalController) { }
 
   ngOnInit() {
-    this.beachService.fetchMeasurementsById(this.route.snapshot.paramMap.get('id')).subscribe(
+    
+    this.beachService.fetchMeasurementsById(this.id).subscribe(
       data => {
         this.beachMeasurements = data;
         this.beachName = data[0].name;
@@ -68,5 +71,9 @@ export class BeachDetailsPage implements OnInit {
       name: 'Ентерококи',
       series: s
     };
+  }
+
+  dismiss() {
+    this.modalController.dismiss();
   }
 }

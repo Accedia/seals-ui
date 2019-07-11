@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { GeoJson } from '../../map';
 import { MapService } from '../../../services/map.service';
 import * as mapboxgl from 'mapbox-gl';
@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { filter } from 'rxjs/operators';
+import { ModalController } from '@ionic/angular';
+import { BeachDetailsPage } from 'src/app/beach-details/beach-details.page';
 
 @Component({
   selector: 'app-mapbox',
@@ -18,6 +20,9 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   private STATUS_OK = 'OK';
   private STATUS_MEDIUM = 'MEDIUM';
   private STATUS_POOR = 'POOR';
+
+  @ViewChild('map')
+  mapElement: ElementRef;
 
   map: mapboxgl.Map;
   style = 'mapbox://styles/sterziev/cjwxbq1r10lki1co3wk0fmcff';
@@ -32,7 +37,8 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(private mapService: MapService,
     private beachMeasurementsService: BeachMeasurementsService,
     private datePipe: DatePipe,
-    private geolocation: Geolocation) {
+    private geolocation: Geolocation,
+    public modalController: ModalController) {
   }
 
   private placeObservable: Subscription;
@@ -89,8 +95,6 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
         if (resp) {
           this.lat = resp.coords.latitude;
           this.lng = resp.coords.longitude;
-          console.log(this.lng + ' ' + this.lat);
-
           marker.setLngLat([this.lng, this.lat])
             .addTo(this.map);
         }
@@ -110,14 +114,21 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-  flyToMe(offsetLat: number) {
+  flyTo(coo: [], offsetLat: number) {
     this.map.flyTo({
-      center: [this.lng, this.lat],
+      center: coo,
       offset: [0, offsetLat],
       zoom: 13
     });
   }
 
+  flyToMe() {
+    this.map.flyTo({
+      center: [this.lng, this.lat],
+      // offset: [0, offsetLat],
+      zoom: 13
+    });
+  }
 
   private setMapPoints() {
     this.map.on('load', () => {
@@ -173,7 +184,8 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
         type: 'Feature',
         properties: {
           description: featureDescription,
-          status
+          status,
+          beachId: measurement.id
         },
         geometry: {
           type: 'Point',
@@ -186,7 +198,7 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   private setPopovers() {
     this.map.on('click', 'readBeaches', (e: any) => {
       const coordinates = e.features[0].geometry.coordinates.slice();
-      const description = e.features[0].properties.description;
+      const beachId = e.features[0].properties.beachId;
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -194,12 +206,21 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
-
-      new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(description)
-        .addTo(this.map);
+      const offsetLat = -(this.mapElement.nativeElement.offsetHeight / 3)
+      this.flyTo(coordinates, offsetLat)
+      this.presentModal(beachId);
     });
+  }
+
+  async presentModal(beachId: string) {
+    const modal = await this.modalController.create({
+      component: BeachDetailsPage,
+      componentProps: {
+        'id': beachId
+      },
+      cssClass: 'select-modal'
+    });
+    return await modal.present();
   }
 
   ngOnDestroy() {
