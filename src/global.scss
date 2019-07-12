@@ -33,8 +33,8 @@
 .marker {
   background-image: url(../src/assets/location.svg);
   background-size: cover;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -46,4 +46,8 @@
 .modal-wrapper.sc-ion-modal-md{
   border-top-left-radius: 7%;
   border-top-right-radius: 7%;
+}
+
+.ion-page {
+  display: block;
 }

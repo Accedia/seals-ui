@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BeachMeasurementsService } from '../services/beach-measurements.service';
 import BeachMeasurementModel from '../models/beach-measurement.model';
@@ -12,6 +12,9 @@ import { ModalController } from '@ionic/angular';
 })
 export class BeachDetailsPage implements OnInit {
   @Input() id: string;
+  @Input() coci: number;
+  @Input() coli: number;
+  
   dataArray: any[];
   beachMeasurements: BeachMeasurementModel[];
   beachName: string;
@@ -23,7 +26,6 @@ export class BeachDetailsPage implements OnInit {
     public modalController: ModalController) { }
 
   ngOnInit() {
-    
     this.beachService.fetchMeasurementsById(this.id).subscribe(
       data => {
         this.beachMeasurements = data;

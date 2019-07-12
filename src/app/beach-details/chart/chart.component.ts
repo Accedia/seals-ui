@@ -1,6 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BeachMeasurementsService } from 'src/app/services/beach-measurements.service';
+import { Component, Input } from '@angular/core';
+import * as shape from 'd3-shape';
+
 @Component({
   selector: 'chart-component',
   templateUrl: './chart.component.html',
@@ -8,26 +8,23 @@ import { BeachMeasurementsService } from 'src/app/services/beach-measurements.se
 })
 export class ChartComponent {
   @Input() dataArray: [];
-  view: any[] = [342, 300];
 
   // options
   showXAxis = true;
   showYAxis = true;
-  gradient = false;
-  showLegend = true;
+  gradient = true;
+  showLegend = false;
   showXAxisLabel = false;
   xAxisLabel = 'Number';
   showYAxisLabel = false;
   yAxisLabel = 'Color Value';
   timeline = false;
-  legendPosition = "bellow"
-
+  legendPosition = "bellow";
+  curve = shape.curveBasis;
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['rgb(108, 26, 185)', 'rgb(175, 17, 25)', '#C7B42C', '#AAAAAA']
   };
 
   constructor() {
-
   }
-
 }

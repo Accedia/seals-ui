@@ -1,3 +1,47 @@
+.icon{
+    height: 16px;
+    width: 16px;
+}
+
 .close{
     background-color: transparent;
+    margin-right: 10px;
+}
+
+.label{
+    padding-left: 16px;
+    font-size: 0.8rem;
+}
+
+.unit {
+    color: #5d5e5f;
+    font-size: 0.6rem;
+}
+
+.coli{
+    color: rgb(108, 26, 185)
+}
+
+.enterococi{
+    color: rgb(175, 17, 25)
+}
+
+.label-container{
+    padding: 1rem;
+}
+
+.center {
+    margin: auto;
+    width: 100%;
+    height: 100%;
+  }
+
+.chart-box{
+    max-height: 290px;
+    height: 100%;
+    display: grid;
+}
+
+.header{
+    max-height: 33%;
 }

@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { GeoJson } from '../../map';
 import { MapService } from '../../../services/map.service';
 import * as mapboxgl from 'mapbox-gl';
 import BeachMeasurementModel from '../../../models/beach-measurement.model';
@@ -54,10 +53,6 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.initializeMap();
-  }
-
-  private initializeMap() {
     this.buildMap();
     this.locateUser();
     this.seedMap();
@@ -89,6 +84,7 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     el.className = 'marker';
     var marker = new mapboxgl.Marker(el);
 
+    //TODO fix filter
     this.coordinatesSubs = this.geolocation.watchPosition()
       // .filter((p) => p.coords !== undefined) //Filter Out Errors
       .subscribe(resp => {
@@ -185,7 +181,9 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
         properties: {
           description: featureDescription,
           status,
-          beachId: measurement.id
+          beachId: measurement.id,
+          coci: measurement.intestinalEnterococci,
+          coli: measurement.ecoli
         },
         geometry: {
           type: 'Point',
@@ -199,6 +197,9 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     this.map.on('click', 'readBeaches', (e: any) => {
       const coordinates = e.features[0].geometry.coordinates.slice();
       const beachId = e.features[0].properties.beachId;
+      const coli = e.features[0].properties.coli;
+      const coci = e.features[0].properties.coci;
+
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -208,15 +209,17 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       }
       const offsetLat = -(this.mapElement.nativeElement.offsetHeight / 3)
       this.flyTo(coordinates, offsetLat)
-      this.presentModal(beachId);
+      this.presentModal(beachId, coli, coci);
     });
   }
 
-  async presentModal(beachId: string) {
+  async presentModal(beachId: string, coli: number, coci: number) {
     const modal = await this.modalController.create({
       component: BeachDetailsPage,
       componentProps: {
-        'id': beachId
+        'id': beachId,
+        'coli': coli,
+        'coci': coci
       },
       cssClass: 'select-modal'
     });
