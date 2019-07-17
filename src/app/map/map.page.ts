@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   templateUrl: 'map.page.html',
   styleUrls: ['map.page.scss'],
 })
-export class MapPage{
+export class MapPage {
   constructor() {}
 }
 

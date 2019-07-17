@@ -70,11 +70,11 @@ export class BeachMeasurementsService {
     );
   }
 
-  getAllbeachesAsGeoCodingPlaces(){
-    return this.beachMeasurements.map(b=> new GeoCodingPlace(
+  getAllbeachesAsGeoCodingPlaces() {
+    return this.beachMeasurements.map(b => new GeoCodingPlace(
                                           b.coordX,
                                           b.coordY,
                                           b.shortName,
-                                          b.name + ' ' + this.mapService.cyrlat(b.name)))
+                                          b.name + ' ' + this.mapService.cyrlat(b.name)));
   }
 }

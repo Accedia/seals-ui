@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input} from '@angular/core';
 import { BeachMeasurementsService } from '../services/beach-measurements.service';
 import BeachMeasurementModel from '../models/beach-measurement.model';
 import { DatePipe } from '@angular/common';
@@ -14,7 +13,7 @@ export class BeachDetailsPage implements OnInit {
   @Input() id: string;
   @Input() coci: number;
   @Input() coli: number;
-  
+
   dataArray: any[];
   beachMeasurements: BeachMeasurementModel[];
   beachName: string;

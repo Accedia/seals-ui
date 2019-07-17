@@ -3,8 +3,8 @@ import { TitleCasePipe } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MapService } from 'src/app/services/map.service';
-import { Logs } from 'selenium-webdriver';
 import { BeachMeasurementsService } from 'src/app/services/beach-measurements.service';
+
 @Component({
   selector: 'search-box',
   templateUrl: 'searchbox.page.html',
@@ -43,7 +43,7 @@ export class SearchboxPage implements OnInit {
       };
     }))).subscribe(result => {
       this.geoPlaces = result;
-      Array.prototype.push.apply(this.geoPlaces, this.getLocalPlaces(this.searchText))
+      Array.prototype.push.apply(this.geoPlaces, this.getLocalPlaces(this.searchText));
     });
   }
 
@@ -53,13 +53,14 @@ export class SearchboxPage implements OnInit {
     this.searchText = '';
   }
 
-  getLocalPlaces(search: string){
-    if (search.length<3)
+  getLocalPlaces(search: string) {
+    if (search.length < 3) {
       return [];
+    }
 
     return this.beachMeasurementsService
         .getAllbeachesAsGeoCodingPlaces()
-        .filter(b => b.name.includes(search.toLocaleLowerCase()))
+        .filter(b => b.name.includes(search.toLocaleLowerCase()));
   }
 }
 

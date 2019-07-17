@@ -18,36 +18,3 @@
 // body {
 //     color: aqua !important;
 // }
-
-.searchbar-search-icon.sc-ion-searchbar-md{
-    border-radius: 20px;
-    background-image: linear-gradient( to bottom right, rgb(134, 3, 211), rgb(53, 0, 83) );
-    color: white!important;
-
-    left: 5px;
-    top: 5px;
-    width: 32px;
-    height: 32px;
-  }
-
-.marker {
-  background-image: url(../src/assets/location.svg);
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.select-modal {
-  padding-top: 33vh !important;  
-}
-
-.modal-wrapper.sc-ion-modal-md{
-  border-top-left-radius: 7%;
-  border-top-right-radius: 7%;
-}
-
-.ion-page {
-  display: block;
-}

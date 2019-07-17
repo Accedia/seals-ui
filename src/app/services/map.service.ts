@@ -32,7 +32,7 @@ export class MapService {
     });
   }
 
-  onPlaceChange(){
+  onPlaceChange() {
     return this.placeSubject.asObservable();
   }
 

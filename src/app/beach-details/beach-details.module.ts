@@ -8,7 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { BeachDetailsPage } from './beach-details.page';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartComponent } from './chart/chart.component';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+
 const routes: Routes = [
   {
     path: '/details',

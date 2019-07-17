@@ -4,3 +4,34 @@
 // styles are for the entire app and not just one component. Additionally, this 
 // file can hold Sass mixins, functions, and placeholder classes to be imported 
 // and used throughout the application.
+
+.searchbar-search-icon.sc-ion-searchbar-md{
+  color: white !important;
+  left: 12px;
+}
+
+.searchbar-input.sc-ion-searchbar-md {
+  padding-inline-start: 45px;
+}
+
+.marker {
+  background-image: url(/src/assets/location.svg);
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.select-modal {
+  padding-top: 33vh !important;
+}
+
+.modal-wrapper.sc-ion-modal-md{
+  border-top-left-radius: 7%;
+  border-top-right-radius: 7%;
+}
+
+.ion-page {
+  display: block;
+}

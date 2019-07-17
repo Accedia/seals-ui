@@ -19,7 +19,7 @@ export class ChartComponent {
   showYAxisLabel = false;
   yAxisLabel = 'Color Value';
   timeline = false;
-  legendPosition = "bellow";
+  legendPosition = 'bellow';
   curve = shape.curveBasis;
   colorScheme = {
     domain: ['rgb(108, 26, 185)', 'rgb(175, 17, 25)', '#C7B42C', '#AAAAAA']

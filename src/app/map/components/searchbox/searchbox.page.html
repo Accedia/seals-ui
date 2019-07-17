@@ -1,6 +1,13 @@
-<div class="autocomplete">
-  <ion-searchbar [(ngModel)]="searchText" (ionFocus)="addFocus()" (ionChange)="search()" (ionBlur)="removeFocus()"
-    debounce=500 color="white">
+<div class="autocomplete" [style.borderRadius]="geoPlaces.length != 0 ? '20px 20px 0 0' : '20px'">
+  <ion-searchbar
+      [(ngModel)]="searchText"
+      (ionFocus)="addFocus()"
+      (ionChange)="search()"
+      (ionBlur)="removeFocus()"
+      debounce=500
+      color="white"
+  >
+    <div class="search-background"></div>
   </ion-searchbar>
   <ion-list *ngIf="geoPlaces.length != 0" class="list">
     <ion-item *ngFor="let res of geoPlaces" (click)="goToGeoPlace(res.coordinates)">

@@ -6,7 +6,6 @@ import { BeachMeasurementsService } from '../../../services/beach-measurements.s
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { filter } from 'rxjs/operators';
 import { ModalController } from '@ionic/angular';
 import { BeachDetailsPage } from 'src/app/beach-details/beach-details.page';
 
@@ -34,10 +33,10 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   markers: any;
 
   constructor(private mapService: MapService,
-    private beachMeasurementsService: BeachMeasurementsService,
-    private datePipe: DatePipe,
-    private geolocation: Geolocation,
-    public modalController: ModalController) {
+              private beachMeasurementsService: BeachMeasurementsService,
+              private datePipe: DatePipe,
+              private geolocation: Geolocation,
+              public modalController: ModalController) {
   }
 
   private placeObservable: Subscription;
@@ -80,11 +79,11 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   locateUser() {
-    var el = document.createElement('div');
+    const el = document.createElement('div');
     el.className = 'marker';
-    var marker = new mapboxgl.Marker(el);
+    const marker = new mapboxgl.Marker(el);
 
-    //TODO fix filter
+    // TODO fix filter
     this.coordinatesSubs = this.geolocation.watchPosition()
       // .filter((p) => p.coords !== undefined) //Filter Out Errors
       .subscribe(resp => {
@@ -207,8 +206,8 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
-      const offsetLat = -(this.mapElement.nativeElement.offsetHeight / 3)
-      this.flyTo(coordinates, offsetLat)
+      const offsetLat = -(this.mapElement.nativeElement.offsetHeight / 3);
+      this.flyTo(coordinates, offsetLat);
       this.presentModal(beachId, coli, coci);
     });
   }
@@ -217,9 +216,9 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: BeachDetailsPage,
       componentProps: {
-        'id': beachId,
-        'coli': coli,
-        'coci': coci
+        id: beachId,
+        coli,
+        coci
       },
       cssClass: 'select-modal'
     });

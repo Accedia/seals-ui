@@ -1,7 +1,7 @@
 export default class BeachMeasurementModel {
   id: string;
   name: string;
-  shortName: string
+  shortName: string;
   coordX: number;
   coordY: number;
   measurementDate: Date;
@@ -24,10 +24,10 @@ export default class BeachMeasurementModel {
     this.ecoli = ecoli;
 
     let index = this.name.indexOf('-');
-    if(name.charAt(index+1)!==' '){
-      index = this.name.indexOf('-',index+1);
+    if (name.charAt(index + 1) !== ' ') {
+      index = this.name.indexOf('-', index + 1);
     }
-    if(index === -1) index = this.name.length;
-    this.shortName = this.name.substring(0,index).trim();
+    if (index === -1) { index = this.name.length; }
+    this.shortName = this.name.substring(0, index).trim();
   }
 }
