@@ -1,3 +1,5 @@
+@import '../theme/variables';
+
 // App Styles
 // ----------------------------------------------------------------------------
 // Put style rules here that you want to apply to the entire application. These 
@@ -22,16 +24,19 @@
   border-radius: 50%;
   cursor: pointer;
 }
-
 .select-modal {
   padding-top: 33vh !important;
-}
 
-.modal-wrapper.sc-ion-modal-md{
-  border-top-left-radius: 7%;
-  border-top-right-radius: 7%;
+  .modal-wrapper.sc-ion-modal-md{
+    position: absolute;
+    bottom: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 370px;
+  }
 }
 
 .ion-page {
   display: block;
 }
+

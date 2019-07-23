@@ -1,7 +1,17 @@
-<ion-card class="chart-wrapper" #wrapper>
-  <ngx-charts-line-chart [scheme]="colorScheme" [results]="dataArray" [gradient]="gradient"
-    [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline"
-    [curve]="curve">
-  </ngx-charts-line-chart>
-</ion-card>
+<div class="chart-wrapper" #wrapper>
+  <ngx-charts-area-chart
+      [scheme]="colorScheme"
+      [results]="dataArray"
+      [gradient]="gradient"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [curve]="curve"
+      [activeEntries]="dataArray">
+  </ngx-charts-area-chart>
+</div>

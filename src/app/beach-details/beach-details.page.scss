@@ -1,47 +1,67 @@
-.icon{
-    height: 16px;
-    width: 16px;
+@import "src/theme/variables";
+
+.icon {
+  height: 16px;
+  width: 16px;
 }
 
-.close{
-    background-color: transparent;
-    margin-right: 10px;
+.close {
+  background-color: transparent;
+  margin-right: 10px;
 }
 
-.label{
-    padding-left: 16px;
-    font-size: 0.8rem;
+.label {
+  padding-left: 16px;
+  font-size: 0.8rem;
 }
 
 .unit {
-    color: #5d5e5f;
-    font-size: 0.6rem;
+  color: #5d5e5f;
+  font-size: 0.6rem;
 }
 
-.coli{
-    color: rgb(108, 26, 185)
+.coli {
+  color: $coli-color;
 }
 
-.enterococi{
-    color: rgb(175, 17, 25)
+.enterococi {
+  color: $coci-color;
 }
 
-.label-container{
-    padding: 1rem;
+.label-container {
+  padding-bottom: 1rem;
 }
 
-.center {
-    margin: auto;
-    width: 100%;
-    height: 100%;
+.beach-details {
+  display: flex;
+  flex-direction: column;
+  height: 370px;
+
+  .chart-box {
+    flex: 2;
+    padding: 10px 15px;
+    border-top: 1px solid #eee;
+
+    chart-component {
+      width: 100%;
+      height: 100%;
+    }
   }
 
-.chart-box{
-    max-height: 290px;
-    height: 100%;
-    display: grid;
-}
+  .header {
+    padding: 10px 10px 10px 25px;
+  }
 
-.header{
-    max-height: 33%;
+  .info {
+    padding: 10px;
+    display: flex;
+    flex: initial;
+    width: 100%;
+
+    justify-content: space-between;
+
+    button {
+
+    }
+  }
 }

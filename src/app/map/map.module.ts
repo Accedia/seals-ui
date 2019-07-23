@@ -15,8 +15,8 @@ import { BeachDetailsPageModule } from '../beach-details/beach-details.module';
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: MapPage }]),
     BeachDetailsPageModule,
+    RouterModule.forChild([{ path: '', component: MapPage }])
   ],
   declarations: [MapPage, MapboxComponent, SearchboxPage],
   providers: [TitleCasePipe, DatePipe, MapService, Geolocation]
