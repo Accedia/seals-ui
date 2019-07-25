@@ -9,18 +9,21 @@
     <div class="label-container">
       <div class="label">
         <img class="icon" src="assets/coli.png">
-        <span class="coli">Ешерихия коли:</span> {{coli}} <span class="unit">MPN/100 cm3</span>
+        <span class="coli">Ешерихия коли:</span> {{coli}} <span class="unit">MPN/100 cm<sup>3</sup></span>
       </div>
       <div class="label">
         <img class="icon" src="assets/enterococi2.png">
-        <span class="enterococi">Ентерококи:</span> {{coci}} <span class="unit">MPN/100 cm3</span>
+        <span class="enterococi">Ентерококи:</span> {{coci}} <span class="unit">MPN/100 cm<sup>3</sup></span>
       </div>
     </div>
-    <button class="close center" (click)="dismiss()">
-      <ion-icon name="information-circle-outline"></ion-icon>
+    <button class="close center" (click)="switchInfo()">
+      <ion-icon *ngIf="!showInfo" name="information-circle-outline"></ion-icon>
+      <ion-icon *ngIf="showInfo" name="stats"></ion-icon>
     </button>
   </div>
   <div class="chart-box" id="chart" #chart *ngIf="dataArray">
-    <chart-component [dataArray]="dataArray"></chart-component>
+    <chart-component *ngIf="!showInfo" [dataArray]="dataArray"></chart-component>
+    <info-component *ngIf="showInfo"></info-component>
+
   </div>
 </div>

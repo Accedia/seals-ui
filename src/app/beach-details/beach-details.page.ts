@@ -18,6 +18,7 @@ export class BeachDetailsPage implements OnInit {
   beachMeasurements: BeachMeasurementModel[];
   beachName: string;
   beachShortName: string;
+  showInfo = false;
 
   constructor(
     private beachService: BeachMeasurementsService,
@@ -47,7 +48,7 @@ export class BeachDetailsPage implements OnInit {
     for (const beach of this.beachMeasurements) {
       s.push(
         {
-          name: this.datepipe.transform(beach.measurementDate, 'yyyy-MM-dd'),
+          name: this.datepipe.transform(beach.measurementDate, 'dd-MM'),
           value: beach.ecoli
         });
     }
@@ -63,7 +64,7 @@ export class BeachDetailsPage implements OnInit {
     for (const beach of this.beachMeasurements) {
       s.push(
         {
-          name: this.datepipe.transform(beach.measurementDate, 'yyyy-MM-dd'),
+          name: this.datepipe.transform(beach.measurementDate, 'dd-MM'),
           value: beach.intestinalEnterococci
         });
     }
@@ -76,5 +77,9 @@ export class BeachDetailsPage implements OnInit {
 
   dismiss() {
     this.modalController.dismiss();
+  }
+
+  switchInfo() {
+    this.showInfo = !this.showInfo;
   }
 }

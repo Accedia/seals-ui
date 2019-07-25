@@ -9,6 +9,7 @@ import { BeachDetailsPage } from './beach-details.page';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartComponent } from './chart/chart.component';
 import { DatePipe } from '@angular/common';
+import { InfoComponent } from './info/info.component';
 
 const routes: Routes = [
   {
@@ -25,7 +26,7 @@ const routes: Routes = [
     NgxChartsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [BeachDetailsPage, ChartComponent],
+  declarations: [BeachDetailsPage, ChartComponent, InfoComponent],
   providers: [DatePipe]
 })
 export class BeachDetailsPageModule {}

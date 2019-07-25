@@ -1,0 +1,32 @@
+@import "src/theme/variables";
+
+.info {
+  padding: 10px;
+  display: flex;
+  flex: initial;
+  width: 100%;
+
+  justify-content: space-between;
+}
+
+.label {
+  padding-left: 16px;
+  font-size: 0.8rem;
+}
+
+.unit {
+  font-size: 0.6rem;
+}
+
+.bullet {
+  padding-left: 11px;
+  font-size: 0.7rem;
+}
+
+.coli {
+  color: $coli-color;
+}
+
+.enterococi {
+  color: $coci-color;
+}

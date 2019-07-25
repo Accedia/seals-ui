@@ -40,52 +40,58 @@
   justify-content: center;
   overflow: hidden;
   position: relative;
-  }
+}
 
 .pulse img {
-width: 20px;
-}    
+  width: 20px;
+}
 .pulse {
-z-index: 100;
-padding: 5px;
-width: 30px;
-height: 30px;
+  z-index: 100;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
 }
 
-.circle {
-position: absolute;
-  
-border-radius: 50%;
-background-color: deepskyblue;
-width: 15px;
-height: 15px;
-opacity: 0;
-animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+.pulse-circle {
+  position: absolute;
+
+  border-radius: 50%;
+  background-color: deepskyblue;
+  width: 15px;
+  height: 15px;
+  opacity: 0;
+  animation: scaleIn 4s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.5, 0.5);
+      opacity: 0.5;
+    }
+    to {
+      transform: scale(2.5, 2.5);
+      opacity: 0;
+    }
+  }
 }
 
-@keyframes scaleIn {
-from {
-transform: scale(.5, .5);
-opacity: .5;
-}
-to {
-transform: scale(2.5, 2.5);
-opacity: 0;
-}
-}
+
 
 .circle1 {
-  animation-delay: -3s
+  animation-delay: -3s;
 }
 
 .circle2 {
-  animation-delay: -2s
+  animation-delay: -2s;
 }
 
 .circle3 {
-  animation-delay: -1s
+  animation-delay: -1s;
 }
 
 .circle4 {
-  animation-delay: 0s
+  animation-delay: 0s;
+}
+
+button:focus {
+  outline: none;
 }

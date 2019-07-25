@@ -247,16 +247,16 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     pulse.className = 'pulse';
 
     const c1 = document.createElement('div');
-    c1.className = 'circle circle1';
+    c1.className = 'pulse-circle circle1';
 
     const c2 = document.createElement('div');
-    c2.className = 'circle circle2';
+    c2.className = 'pulse-circle circle2';
 
     const c3 = document.createElement('div');
-    c3.className = 'circle circle3';
+    c3.className = 'pulse-circle circle3';
 
     const c4 = document.createElement('div');
-    c4.className = 'circle circle4';
+    c4.className = 'pulse-circle circle4';
 
     markerEl.appendChild(pulse);
     markerEl.appendChild(c1);
