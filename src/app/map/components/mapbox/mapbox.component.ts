@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import { MapService } from '../../../services/map.service';
 import * as mapboxgl from 'mapbox-gl';
 import BeachMeasurementModel from '../../../models/beach-measurement.model';
@@ -12,12 +19,13 @@ import { BeachDetailsPage } from 'src/app/beach-details/beach-details.page';
 @Component({
   selector: 'app-mapbox',
   templateUrl: './mapbox.component.html',
-  styleUrls: ['./mapbox.component.scss'],
+  styleUrls: ['./mapbox.component.scss']
 })
 export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
-  private STATUS_OK = 'OK';
-  private STATUS_MEDIUM = 'MEDIUM';
-  private STATUS_POOR = 'POOR';
+  public readonly POOR_THRESHOLD = 100;
+  public readonly MEDIUM_THRESHOLD = 40;
+  public readonly ECOLI_ACCEPTABLE_VALUE = 500;
+  public readonly COCCI_ACCEPTABLE_VALUE = 200;
 
   @ViewChild('map')
   mapElement: ElementRef;
@@ -32,23 +40,26 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   source: any;
   markers: any;
 
-  constructor(private mapService: MapService,
-              private beachMeasurementsService: BeachMeasurementsService,
-              private datePipe: DatePipe,
-              private geolocation: Geolocation,
-              public modalController: ModalController) {
-  }
+  constructor(
+    private mapService: MapService,
+    private beachMeasurementsService: BeachMeasurementsService,
+    private datePipe: DatePipe,
+    private geolocation: Geolocation,
+    public modalController: ModalController
+  ) {}
 
   private placeObservable: Subscription;
   private coordinatesSubs: Subscription;
 
   ngOnInit() {
-    this.placeObservable = this.mapService.onPlaceChange().subscribe(coodinates => {
-      this.map.flyTo({
-        center: coodinates,
-        zoom: 13
+    this.placeObservable = this.mapService
+      .onPlaceChange()
+      .subscribe(coordinates => {
+        this.map.flyTo({
+          center: coordinates,
+          zoom: 13
+        });
       });
-    });
   }
 
   ngAfterViewInit() {
@@ -75,23 +86,20 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     this.map.on('load', () => {
       this.map.resize();
     });
-
   }
 
   locateUser() {
-    const el = document.createElement('div');
-    el.className = 'marker';
-    const marker = new mapboxgl.Marker(el);
+    const marker = new mapboxgl.Marker(this.getMarkerEl());
 
     // TODO fix filter
-    this.coordinatesSubs = this.geolocation.watchPosition()
+    this.coordinatesSubs = this.geolocation
+      .watchPosition()
       // .filter((p) => p.coords !== undefined) //Filter Out Errors
       .subscribe(resp => {
         if (resp) {
           this.lat = resp.coords.latitude;
           this.lng = resp.coords.longitude;
-          marker.setLngLat([this.lng, this.lat])
-            .addTo(this.map);
+          marker.setLngLat([this.lng, this.lat]).addTo(this.map);
         }
       });
   }
@@ -102,10 +110,12 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
     if (this.beachMeasurements.length !== 0) {
       this.setMapPoints();
     } else {
-      this.beachMeasurementsService.onBeachMeasurementChange().subscribe(measurements => {
-        this.beachMeasurements = measurements;
-        this.setMapPoints();
-      });
+      this.beachMeasurementsService
+        .onBeachMeasurementChange()
+        .subscribe(measurements => {
+          this.beachMeasurements = measurements;
+          this.setMapPoints();
+        });
     }
   }
 
@@ -147,13 +157,13 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
           'circle-color': [
             'match',
             ['get', 'status'],
-            this.STATUS_POOR, '#fb192b',
-            this.STATUS_MEDIUM, '#FBB03B',
-            this.STATUS_OK, '#58e539',
+            Status.POOR, '#fb192b',
+            Status.MEDIUM, '#FBB03B',
+            Status.OK, '#58e539',
             /* other */ '#ccc'
           ]
         },
-        filter: ['==', '$type', 'Point'],
+        filter: ['==', '$type', 'Point']
       });
 
       this.setPopovers();
@@ -162,20 +172,26 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private generateFeatures() {
     return this.beachMeasurements.map(measurement => {
-      const averageMeasurement = (measurement.intestinalEnterococci + measurement.ecoli) / 2;
-      const status = averageMeasurement >= 30 ? this.STATUS_MEDIUM : this.STATUS_OK;
+      const status = this.calculateStatus(measurement);
 
       const featureDescription = `
       <div>
         <strong style="display: block">${measurement.name}</strong>
-        <span style="display: block">Ентерококи: ${measurement.intestinalEnterococci}
+        <span style="display: block">Ентерококи: ${
+          measurement.intestinalEnterococci
+        }
           <span style="font-size: 10px"> MPN/100 cm3</span>
         </span>
-        <span style="display: block">Eшерихия коли: ${measurement.ecoli} <span style="font-size: 10px">MPN/100 cm3</span></span>
-        <span style="display: block">${this.datePipe.transform(measurement.measurementDate, 'yyyy-MM-dd')}</span>
+        <span style="display: block">Eшерихия коли: ${
+          measurement.ecoli
+        } <span style="font-size: 10px">MPN/100 cm3</span></span>
+        <span style="display: block">${this.datePipe.transform(
+          measurement.measurementDate,
+          'yyyy-MM-dd'
+        )}</span>
       </div>`;
 
-      return ({
+      return {
         type: 'Feature',
         properties: {
           description: featureDescription,
@@ -188,7 +204,7 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
           type: 'Point',
           coordinates: [measurement.coordY, measurement.coordX]
         }
-      });
+      };
     });
   }
 
@@ -198,7 +214,6 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       const beachId = e.features[0].properties.beachId;
       const coli = e.features[0].properties.coli;
       const coci = e.features[0].properties.coci;
-
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -210,6 +225,46 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
       this.flyTo(coordinates, offsetLat);
       this.presentModal(beachId, coli, coci);
     });
+  }
+
+  private calculateStatus(measurement) {
+    const percentOfCocci = 100 * (measurement.intestinalEnterococci / this.COCCI_ACCEPTABLE_VALUE);
+    const percentOfColi = 100 * (measurement.ecoli / this.ECOLI_ACCEPTABLE_VALUE);
+    const healthIndex = Math.max(percentOfCocci, percentOfColi);
+
+    if (healthIndex >= this.POOR_THRESHOLD) {
+      return Status.POOR;
+    } else if (healthIndex >= this.MEDIUM_THRESHOLD) {
+      return Status.MEDIUM;
+    }
+    return Status.OK;
+  }
+
+  private getMarkerEl() {
+    const markerEl = document.createElement('div');
+    markerEl.className = 'marker';
+    const pulse = document.createElement('div');
+    pulse.className = 'pulse';
+
+    const c1 = document.createElement('div');
+    c1.className = 'circle circle1';
+
+    const c2 = document.createElement('div');
+    c2.className = 'circle circle2';
+
+    const c3 = document.createElement('div');
+    c3.className = 'circle circle3';
+
+    const c4 = document.createElement('div');
+    c4.className = 'circle circle4';
+
+    markerEl.appendChild(pulse);
+    markerEl.appendChild(c1);
+    markerEl.appendChild(c2);
+    markerEl.appendChild(c3);
+    markerEl.appendChild(c4);
+
+    return markerEl;
   }
 
   async presentModal(beachId: string, coli: number, coci: number) {
@@ -231,3 +286,8 @@ export class MapboxComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 }
 
+enum Status {
+  OK,
+  MEDIUM,
+  POOR
+}

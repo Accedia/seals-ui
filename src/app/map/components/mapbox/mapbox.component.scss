@@ -23,19 +23,25 @@
   z-index: 10;
 }
 
-.localize{
+.localize {
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 10;
   background-color: rgba(255, 255, 255, 0.5);
   margin-bottom: 40px;
-  background-repeat: no-repeat;
-  background-image: url(../../../../assets/location.svg);
 
   width: 24px;
   height: 24px;
-  padding: 1px;
+  padding: 4px;
   border-radius: 50%;
   margin-right: 10px;
+}
+
+.center {
+  background-repeat: no-repeat;
+  background-image: url(../../../../assets/location.svg);
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
 }
