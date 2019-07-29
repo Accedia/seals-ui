@@ -31,6 +31,10 @@ export class SearchboxPage implements OnInit {
   removeFocus() {
   }
 
+  clear() {
+    this.geoPlaces = [];
+  }
+
   search() {
     if (!this.searchText.length) {
       return;
