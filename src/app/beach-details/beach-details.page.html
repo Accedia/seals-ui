@@ -21,9 +21,10 @@
       <ion-icon *ngIf="showInfo" name="stats"></ion-icon>
     </button>
   </div>
-  <div class="chart-box" id="chart" #chart *ngIf="dataArray">
-    <chart-component *ngIf="!showInfo" [dataArray]="dataArray"></chart-component>
-    <info-component *ngIf="showInfo"></info-component>
-
+  <div class="content-box" id="chart" #chart *ngIf="dataArray && !showInfo">
+    <chart-component [dataArray]="dataArray"></chart-component>
+  </div>
+  <div class="content-box" id="info" *ngIf="showInfo">
+    <info-component></info-component>
   </div>
 </div>
